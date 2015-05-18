@@ -13,12 +13,12 @@ if sys.version_info < (2,5):
 import fabcommon
 
 setup(name='fabric',
-      version=fabric.__version__,
+      version=fabcommon.__version__,
       description='Reusable deployment script in fabric.',
-      long_description=fabric.__doc__,
-      author=bottle.__author__,
+      long_description=fabcommon.__doc__,
+      author=fabcommon.__author__,
       author_email='mmarcos@rodesia.org',
-      url='http://bottlepy.org/',
+      url='https://github.com/mmarcos/fabcommon/',
       py_modules=['fabcommon'],
       scripts=['fabcommon.py'],
       license='MIT',
