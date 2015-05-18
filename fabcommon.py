@@ -1,3 +1,4 @@
+from __future__ import with_statement
 """
 Fabcommon is a Reusable deployment script in fabric
 Copyright (c) 2015, Miguel Marcos.
@@ -8,7 +9,6 @@ __author__ = 'Miguel Marcos'
 __version__ = '1.0.0'
 __license__ = 'MIT'
 
-from __future__ import with_statement
 import os
 import re
 from fabric.api import local, settings, abort, env, run, cd, prefix
@@ -168,7 +168,7 @@ def deploy(version, message='', update_cron=False):
         ' && ln -s '+ os.path.join(env.base_path, 'media') + ' ' +\
         os.path.join(releases_path, version, 'media'))
     
-    if env.pre_activate_task
+    if env.pre_activate_task:
         env.pre_activate_task(releases_path, version)
         
     # update the crontab if crontab.txt exists and update_cron is True
