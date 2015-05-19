@@ -7,29 +7,28 @@ current version should be able to deploy any kind of python web project.
 
 It assumes, by default, that projects have the following structure:
 
-{project_name}/
-   src/
-      requirements.txt
-	  crontab.txt
-   ...
+	{project_name}/
+	   src/
+	      requirements.txt
+		  crontab.txt
+	   ...
 
 and will create a deploy with the following structure:
 
-{web_projects}/
-   {project_name}/
-      releases/
-	     v1.0.0/
-		 v1.0.1/
-		 v1.0.2-beta/
-		 ...
-	  logs/
-	     ...
-	  media/
-	     ...
-	  src -> releases/{version}/src
-	  venv/
-	     ...
-
+	{web_projects}/
+	   {project_name}/
+	      releases/
+		     v1.0.0/
+			 v1.0.1/
+			 v1.0.2-beta/
+			 ...
+		  logs/
+		     ...
+		  media/
+		     ...
+		  src -> releases/{version}/src
+		  venv/
+		     ...
 
 Each project release will be stored in the releases directory and named as the project tag being deployed.
 A symlink is then created in the root of the project to the src directory of the deployed tag.
@@ -47,6 +46,7 @@ In addition to creating the above layout it:
   True (default is False)
 - runs additional user defined tasks
 - limits the number of deploys in the relases directory to the last 10.
+
 
 ##Usage:
 
@@ -96,7 +96,7 @@ setup the different deploy environments, for example prod or stage:
 	    env.base_path = '/www/my_project_stage'
 	    env.local_settings = 'settings_stage.py'
 
-deploy:
+**Deploy:**
 	
 	fab stage deploy 
  
