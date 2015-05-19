@@ -48,7 +48,57 @@ In addition to creating the above layout it:
 - runs additional user defined tasks
 - limits the number of deploys in the relases directory to the last 10.
 
+##Usage:
 
+**Install fabcommon**
+
+sudo pip install git+https://github.com/mmarcos/fabcommon.git#egg=fabcommon
+
+**Create a fabfile.py in your project**
+
+in the file import deploy from fabcommon:
+
+	from fabric.api import env, run, cd, prefix
+	from fabcommon import deploy
+
+
+setup the repository url for the project:
+
+	env.repository = 'git+git://my_repository'
+
+optionally create a django_pre_activate_task for additional tasks, for example:
+
+	def django_pre_activate_task(releases_path, version):
+	    with cd(os.path.join(releases_path, version)):
+	        # create local_settings.py file if not there
+	        run('cd config') + \
+	            ' && if [ ! -f settings_local.py ]; then ' + \
+	            'cp '+ env.local_settings + ' settings_local.py; fi')
+	        with prefix('source venv/bin/activate'):
+	            run('./manage.py collectstatic --noinput')
+	            run('./manage.py syncdb --noinput')
+	            run('./manage.py migrate')
+
+add the newly created method to env:
+
+	env.pre_activate_task = django_pre_activate_task
+
+setup the different deploy environments, for example prod or stage: 
+
+	def prod():
+	    env.hosts = ['127.0.0.1']
+	    env.base_path = '/www/my_project'
+	    env.local_settings = 'settings_prod.py'
+
+
+	def stage():
+	    env.hosts = ['127.0.0.1']
+	    env.base_path = '/www/my_project_stage'
+	    env.local_settings = 'settings_stage.py'
+
+deploy:
+	
+	fab stage deploy 
  
 
    
