@@ -1,12 +1,12 @@
 from __future__ import with_statement
 """
-Fabcommon is a Reusable deployment script in fabric
+Fabcommon is a reusable deployment script in fabric
 Copyright (c) 2015, Miguel Marcos.
 License: MIT (see LICENSE for details)
 """
 
 __author__ = 'Miguel Marcos'
-__version__ = '1.0.0'
+__version__ = '0.9.0'
 __license__ = 'MIT'
 
 import os
