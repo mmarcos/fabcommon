@@ -4,7 +4,6 @@ from fabcommon import deploy
 
 
 env.repository = 'my_repository'
-env.base_path = '/www' # remote base path for the web projects
 
 
 def django_pre_activate_task(releases_path, version):
