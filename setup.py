@@ -24,7 +24,6 @@ setup(name='fabcommon',
       install_requires=['fabric>=1.10.1'],
       license='MIT',
       platforms = 'any',
-      packages=['distutils', 'distutils.command'],
       classifiers=[
           'Development Status :: 4 - Beta',
           'Environment :: Console',
