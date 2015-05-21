@@ -118,7 +118,9 @@ patch version 3.
 Tagging a new version is a matter of using the keywords major, minor, or patch 
 instead of a tag name, for example:
 
-fab staging deploy:major 
+	fab staging deploy:minor
+
+if the previous version was 1.2.3, then this deploy would create version 1.3.0
 
 
 

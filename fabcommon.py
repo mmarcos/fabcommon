@@ -192,7 +192,7 @@ def deploy(version, message='', update_cron=False):
                 'sed -e \'s,{{ project_dir }},\'$PWD\',\' | crontab; fi')
  
     # activate the build
-    run('ln -sfn ' + os.path.join(releases_path, version) + ' ' +\
+    run('ln -sfn ' + os.path.join(releases_path, version, 'src') + ' ' +\
         os.path.join(env.base_path, 'src'))
     
     # only keep the 10 most recent releases
