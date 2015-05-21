@@ -169,7 +169,7 @@ def deploy(version, message='', update_cron=False):
                 '&& virtualenv venv; fi ' +\
                 '&& source venv/bin/activate ' +\
                 '&& pip install -qr ' + os.path.join(releases_path, version, \
-                                                     'src/requirements.txt')        
+                                                     'src/requirements.txt'))       
     
     # create a logs and media dirs if they do not exist
     run('mkdir -p ' + os.path.join(env.base_path, 'logs'))
