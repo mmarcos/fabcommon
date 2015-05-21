@@ -16,9 +16,9 @@ from fabric.contrib.console import confirm
 
 # default settings
 env.repository_type = 'git'
-# can be release - new virtualenv for every release or project - one virtualenv
-# for all releases.
-env.venv_scope = 'release' 
+# can be 'release' - new virtualenv for every release, 'project' - one 
+#virtualenv for all releases or None - no virtualenv.
+env.venv_scope = 'project' 
 
 def sort_versions(versions, reverse=False): 
     # small hack to ensure final versions come after pre-releases
@@ -150,15 +150,24 @@ def deploy(version, message='', update_cron=False):
             'git clone ' + env.repository + ' ' + version +\
             ' && cd ' + version + ' && git checkout -b tags/' + version +\
             ' && rm -rf .git; fi')
-        # setup virtualenv and install dependencies, if not already there
-        run('cd ' + version + ' && if [ ! -d venv ]; then ' +\
-            'virtualenv venv ' +\
-            '&& source venv/bin/activate ' +\
-            '&& pip install -qr requirements.txt; fi')
+        if env.venv_scope == 'release':
+            # setup virtualenv and install dependencies, if not already there
+            run('cd ' + version + ' && if [ ! -d venv ]; then ' +\
+                'virtualenv venv ' +\
+                '&& source venv/bin/activate ' +\
+                '&& pip install -qr requirements.txt; fi')
     
-    # add a symlink to venv
-    run('ln -sfn ' + os.path.join(releases_path, version, 'venv') + ' ' +\
-        os.path.join(env.base_path, 'venv'))
+    if env.venv_scope == 'release':
+        # add a symlink to venv
+        run('rm -rf ' + os.path.join(env.base_path, 'venv'))
+        run('ln -sfn ' + os.path.join(releases_path, version, 'venv') + ' ' +\
+            os.path.join(env.base_path, 'venv'))
+    elif env.venv_scope == 'project':
+        run('if [ ! -d venv ]; then ' +\
+            'rm -rf venv ' +\
+            '&& virtualenv venv; fi' +\
+            '&& source venv/bin/activate ' +\
+            '&& pip install -qr requirements.txt')        
     
     # create a logs and media dirs if they do not exist
     run('mkdir -p ' + os.path.join(env.base_path, 'logs'))
