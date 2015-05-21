@@ -165,7 +165,7 @@ def deploy(version, message='', update_cron=False):
     elif env.venv_scope == 'project':
         run('if [ ! -d venv ]; then ' +\
             'rm -rf venv ' +\
-            '&& virtualenv venv; fi' +\
+            '&& virtualenv venv; fi ' +\
             '&& source venv/bin/activate ' +\
             '&& pip install -qr requirements.txt')        
     

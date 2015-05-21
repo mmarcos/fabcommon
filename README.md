@@ -77,7 +77,6 @@ optionally create a function for additional tasks, for example:
 	            'cp '+ env.local_settings + ' settings_local.py; fi')
 	        with prefix('source venv/bin/activate'):
 	            run('./manage.py collectstatic --noinput')
-	            run('./manage.py syncdb --noinput')
 	            run('./manage.py migrate')
 
 add the newly created function to env:
@@ -99,7 +98,7 @@ setup the different deploy environments, for example prodution or staging:
 
 **Deploy:**
 	
-	fab staging deploy {tag}
+	fab staging deploy:{tag}
 	
 
 ## Versioning
