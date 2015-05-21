@@ -9,13 +9,12 @@ env.repository = 'my_repository'
 def django_pre_activate_task(releases_path, version):
     with cd(os.path.join(releases_path, version)):
         # create local_settings.py file if not there
-        run('cd config') + \
+        run('cd src/config' + \
             ' && if [ ! -f settings_local.py ]; then ' + \
             'cp '+ env.local_settings + ' settings_local.py; fi')
-        with prefix('source venv/bin/activate'):
-            run('./manage.py collectstatic --noinput')
-            run('./manage.py syncdb --noinput')
-            run('./manage.py migrate')
+        with prefix('source ' + os.path.join(env.base_path, 'venv/bin/activate')):
+            run('src/manage.py collectstatic --noinput')
+            run('src/manage.py migrate')
 
 env.pre_activate_task = django_pre_activate_task
 
