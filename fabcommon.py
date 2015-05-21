@@ -155,7 +155,7 @@ def deploy(version, message='', update_cron=False):
             run('cd ' + version + ' && if [ ! -d venv ]; then ' +\
                 'virtualenv venv ' +\
                 '&& source venv/bin/activate ' +\
-                '&& pip install -qr requirements.txt; fi')
+                '&& pip install -qr src/requirements.txt; fi')
     
     if env.venv_scope == 'release':
         # add a symlink to venv
@@ -163,11 +163,13 @@ def deploy(version, message='', update_cron=False):
         run('ln -sfn ' + os.path.join(releases_path, version, 'venv') + ' ' +\
             os.path.join(env.base_path, 'venv'))
     elif env.venv_scope == 'project':
-        run('if [ ! -d venv ]; then ' +\
-            'rm -rf venv ' +\
-            '&& virtualenv venv; fi ' +\
-            '&& source venv/bin/activate ' +\
-            '&& pip install -qr requirements.txt')        
+        with cd(env.base_path):
+            run('if [ ! -d venv ]; then ' +\
+                'rm -rf venv ' +\
+                '&& virtualenv venv; fi ' +\
+                '&& source venv/bin/activate ' +\
+                '&& pip install -qr ' + os.path.join(releases_path, version, \
+                                                     'src/requirements.txt')        
     
     # create a logs and media dirs if they do not exist
     run('mkdir -p ' + os.path.join(env.base_path, 'logs'))
