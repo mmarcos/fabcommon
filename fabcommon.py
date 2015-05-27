@@ -197,5 +197,5 @@ def deploy(version, message='', update_cron=False):
     
     # only keep the 10 most recent releases
     with cd(releases_path):
-        run('rm -rf `ls -dt | awk "NR>10"`')
+        run('ls -t | sed \'s,\(.*\),"\1",\' | tail -n+10 | xargs rm -rf')
         
