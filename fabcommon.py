@@ -6,7 +6,7 @@ License: MIT (see LICENSE for details)
 """
 
 __author__ = 'Miguel Marcos'
-__version__ = '0.9.0'
+__version__ = '0.9.1'
 __license__ = 'MIT'
 
 import os
@@ -18,7 +18,7 @@ from fabric.contrib.console import confirm
 env.repository_type = 'git'
 # can be 'release' - new virtualenv for every release, 'project' - one 
 #virtualenv for all releases or None - no virtualenv.
-env.venv_scope = 'project' 
+env.venv_scope = 'project'
 
 def sort_versions(versions, reverse=False): 
     # small hack to ensure final versions come after pre-releases
@@ -138,6 +138,7 @@ def verify_or_increase_version(version_pre_release, message):
 
 def deploy(version, message='', update_cron=False):
     releases_path = os.path.join(env.base_path, 'releases')
+    virtualenv_python_path = '-v ' + env.python_path if env.python_path else ''
     # if no specific version number is specified we will increment the current 
     # one based on how big the changes are.
     
@@ -153,7 +154,7 @@ def deploy(version, message='', update_cron=False):
         if env.venv_scope == 'release':
             # setup virtualenv and install dependencies, if not already there
             run('cd ' + version + ' && if [ ! -d venv ]; then ' +\
-                'virtualenv venv ' +\
+                'virtualenv ' + virtualenv_python_path + ' venv ' +\
                 '&& source venv/bin/activate ' +\
                 '&& pip install -qr src/requirements.txt; fi')
     
@@ -166,7 +167,7 @@ def deploy(version, message='', update_cron=False):
         with cd(env.base_path):
             run('if [ ! -d venv ]; then ' +\
                 'rm -rf venv ' +\
-                '&& virtualenv venv; fi ' +\
+                '&& virtualenv ' + virtualenv_python_path + ' venv; fi ' +\
                 '&& source venv/bin/activate ' +\
                 '&& pip install -qr ' + os.path.join(releases_path, version, \
                                                      'src/requirements.txt'))       
@@ -197,5 +198,5 @@ def deploy(version, message='', update_cron=False):
     
     # only keep the 10 most recent releases
     with cd(releases_path):
-        run('ls -t | sed \'s,\\(.*\\),"\\1",\' | tail -n+10 | xargs rm -rf')
+        run('ls -t | sed \'s,\\(.*\\),"\\1",\' | tail -n+11 | xargs rm -rf')
         
