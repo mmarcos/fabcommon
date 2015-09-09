@@ -6,7 +6,7 @@ License: MIT (see LICENSE for details)
 """
 
 __author__ = 'Miguel Marcos'
-__version__ = '0.9.1'
+__version__ = '0.9.2'
 __license__ = 'MIT'
 
 import os
@@ -138,7 +138,7 @@ def verify_or_increase_version(version_pre_release, message):
 
 def deploy(version, message='', update_cron=False):
     releases_path = os.path.join(env.base_path, 'releases')
-    virtualenv_python_path = '-v ' + env.python_path if env.python_path else ''
+    virtualenv_python_path = '-p ' + env.python_path if env.python_path else ''
     # if no specific version number is specified we will increment the current 
     # one based on how big the changes are.
     
